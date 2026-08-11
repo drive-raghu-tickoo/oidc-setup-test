@@ -21,3 +21,9 @@ variable "inline_policy_name" {
   description = "The name of the inline policy attached to the CircleCI IAM role"
   default     = "circleci-s3-access"
 }
+
+variable "cross_account_role_arns" {
+  type        = list(string)
+  description = "ARNs of IAM roles in other AWS accounts that this role is allowed to assume"
+  default     = []
+}
