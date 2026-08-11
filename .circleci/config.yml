@@ -17,6 +17,16 @@ jobs:
       - run:
           name: Check S3 credentials
           command: aws s3 ls --region ap-southeast-2
+
+      - run:
+          name: Configure cross-account profile
+          command: |
+            aws configure set role_arn arn:aws:iam::982081079834:role/drive-circleci-cross-account-role --profile cross-account
+            aws configure set source_profile default --profile cross-account
+
+      - run:
+          name: Check cross-account S3 credentials
+          command: aws s3 ls --region ap-southeast-2 --profile cross-account
 workflows:
   version: 2
   build_and_push:
