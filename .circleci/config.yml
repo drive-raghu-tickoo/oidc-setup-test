@@ -10,7 +10,7 @@ jobs:
 
       
       - aws-cli/setup:
-          role_arn: arn:aws:iam::654654311376:role/TERRAFORM_CIRCLE_CI
+          role_arn: arn:aws:iam::639568032168:role/drive-circleci-oidc-role
           profile_name: default
 
           
