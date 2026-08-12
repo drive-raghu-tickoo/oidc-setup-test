@@ -1,26 +1,20 @@
-locals {
-  source_account_id       = "639568032168"
-  target_account_id       = "982081079834"
-  cross_account_role_name = "drive-circleci-cross-account-role"
-}
-
 module "circleci-aws-oidc" {
-  source          = "./modules/"
-  circleci_org_id = "e4b509d4-c8fe-4807-a0d5-e940b101cae5"
-  role_name       = "drive-circleci-oidc-role"
-  inline_policy_name = "drive-circleci-oidc-policy"
+  source             = "./modules/prod-circleci-oidc-role"
+  circleci_org_id    = var.circleci_org_id
+  role_name          = var.circleci_role_name
+  inline_policy_name = var.circleci_inline_policy_name
 
-  cross_account_role_arns = ["arn:aws:iam::${local.target_account_id}:role/${local.cross_account_role_name}"]
+  cross_account_role_arns = ["arn:aws:iam::${var.staging_account_id}:role/${var.cross_account_role_name}"]
 }
 
 module "cross-account-deploy" {
-  source = "./modules/cross-account-role"
+  source = "./modules/staging-cross-account-role"
   providers = {
     aws = aws.target_account
   }
 
-  role_name          = local.cross_account_role_name
-  inline_policy_name = "drive-circleci-cross-account-policy"
-  trusted_role_arn   = "arn:aws:iam::${local.source_account_id}:role/drive-circleci-oidc-role"
+  role_name          = var.cross_account_role_name
+  inline_policy_name = var.cross_account_inline_policy_name
+  trusted_role_arn   = "arn:aws:iam::${var.production_account_id}:role/drive-circleci-oidc-role"
   policy_json        = file("${path.root}/inline-policy.json")
 }

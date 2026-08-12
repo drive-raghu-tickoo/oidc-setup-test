@@ -11,6 +11,6 @@ provider "aws" {
 
 provider "aws" {
   alias   = "target_account"
-  profile = "aws-deepa-credentials"
+  profile = "aws-drive-staging-admin"
   region  = "ap-southeast-2"
 }
